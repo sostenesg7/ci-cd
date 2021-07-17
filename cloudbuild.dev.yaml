@@ -6,5 +6,5 @@ steps:
   - name: 'docker'
     args: ['run', '-d', '--name', 'goapp', 'ci-cd:latest']
   # test
-  - name: 'docker'
-    args: ['exec', 'goapp', 'go', 'test']
+  # - name: 'docker'
+  #  args: ['exec', 'goapp', 'go', 'test']
