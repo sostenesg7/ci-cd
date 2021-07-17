@@ -1,0 +1,10 @@
+steps:
+  # build
+  - name: 'docker'
+    args: ['build', '-t', 'ci-cd:latest', '-t', 'ci-cd:$SHORT_SHA', '.']
+  # run
+  - name: 'docker'
+    args: ['run', '-d', '--name', 'goapp', 'ci-cd:latest']
+  # test
+  - name: 'docker'
+    args: ['exec', 'goapp', 'go', 'test']
