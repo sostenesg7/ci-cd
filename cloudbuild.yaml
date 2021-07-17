@@ -1,16 +1,36 @@
 steps:
   # build
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'ci-cd:latest', '-t', 'ci-cd:$SHORT_SHA', '.']
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "ci-cd:latest", "-t", "ci-cd:$SHORT_SHA", "."]
 
   # also can use only 'docker' as name, gcr will recognize too
   # run
-  - name: 'docker'
-    args: ['run', '-d', '--name', 'goapp', 'ci-cd:latest']
+  - name: "docker"
+    args: ["run", "-d", "--name", "goapp", "ci-cd:latest"]
 
   # tests
   #- name: 'docker'
   #  args: ['exeg', 'goapp', 'go', 'test']
 
-  #- name: 'docker'
-  #  args: ['push', 'ci-cd:latest', 'ci-cd:$SHORT_SHA']
+  # push do cloud run
+  - name: "docker"
+    args: ["push", "ci-cd:latest"]
+
+  - name: "docker"
+    args: ["push", "ci-cd:$SHORT_SHA"]
+
+    # us-central1
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "run",
+        "deploy",
+        "go-cloudrun",
+        "--image",
+        "ci-cd:$SHORT_SHA",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+      ]
