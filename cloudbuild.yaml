@@ -1,12 +1,27 @@
 steps:
   # build
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "ci-cd:latest", "-t", "ci-cd:$SHORT_SHA", "."]
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/cloud-functions-estudo/ci-cd:latest",
+        "-t",
+        "gcr.io/cloud-functions-estudo/ci-cd:$SHORT_SHA",
+        ".",
+      ]
 
   # also can use only 'docker' as name, gcr will recognize too
   # run
   - name: "docker"
-    args: ["run", "-d", "--name", "goapp", "ci-cd:latest"]
+    args:
+      [
+        "run",
+        "-d",
+        "--name",
+        "goapp",
+        "gcr.io/cloud-functions-estudo/ci-cd:latest",
+      ]
 
   # tests
   #- name: 'docker'
@@ -14,10 +29,10 @@ steps:
 
   # push do cloud run
   - name: "docker"
-    args: ["push", "ci-cd:latest"]
+    args: ["push", "gcr.io/cloud-functions-estudo/ci-cd:latest"]
 
   - name: "docker"
-    args: ["push", "ci-cd:$SHORT_SHA"]
+    args: ["push", "gcr.io/cloud-functions-estudo/ci-cd:$SHORT_SHA"]
 
     # us-central1
   - name: "gcr.io/cloud-builders/gcloud"
@@ -27,11 +42,10 @@ steps:
         "deploy",
         "go-cloudrun",
         "--image",
-        "ci-cd:$SHORT_SHA",
+        "gcr.io/cloud-functions-estudo/ci-cd:$SHORT_SHA",
         "--region",
         "us-central1",
         "--platform",
         "managed",
         "--allow-unauthenticated",
       ]
-
