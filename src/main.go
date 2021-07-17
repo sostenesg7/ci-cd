@@ -6,12 +6,8 @@ import (
 	"net/http"
 )
 
-func ResponseOk() string {
-	return "OK"
-}
-
 func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, ResponseOk())
+	fmt.Fprint(w, "OK")
 }
 
 func main() {
